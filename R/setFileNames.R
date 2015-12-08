@@ -4,11 +4,11 @@ setFileNames = function(i, root){
   if(is.numeric(i)){
     part = paste0(ifelse(i < 10, "0", ""), i)
     path = paste0(root, "/Chapter", part, "/")
-    fName = paste0("Chapter", part, ".tex")
+    fName = paste0("Chapter", part, ".Rnw")
   }else if(is.character(i) & grep("[A-D]",i)){
     part = gsub("^.*([A-D]).*$", "\\1", i)
     path = fName = paste0(root, "/Appendix", part, "/")
-    fName = paste0("Appendix", part, ".tex")
+    fName = paste0("Appendix", part, ".Rnw")
   }
   
   if(is.null(fName)){

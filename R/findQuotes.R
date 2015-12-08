@@ -37,16 +37,13 @@ fixCannot = function(rng){
   }
 }
 
-findQuotesPairs = function(rng = 1:20){
+findQuotesPairs = function(rng = 1:20, root, dummyRun = FALSE, promptChange = TRUE){
   for(i in rng){
-    part = paste0(ifelse(i < 10, "0", ""), i)
-    path = fName = paste0("../Chapter", part, "/")
-    fName = paste0("Chapter", part, ".tex")
-    fullName = paste0(path, fName)
-    cat(fName, "\n")
+    f = setFileNames(i, root)
+    cat(f$fName, "\n")
     
-    Lines = readLines(fullName)
-    writeBackup(Lines, fName, path)
+    Lines = readLines(f$fullName)
+    writeBackup(f$fullName, f$path, dummyRun)
     quotePairLines = grep('\"[^"]+\"', Lines)
     changed = FALSE
     
@@ -54,15 +51,21 @@ findQuotesPairs = function(rng = 1:20){
       newLine = gsub('\"([^"]+)\"', "``\\1''", Lines[line])
       cat(paste(line, ": ", Lines[line], "\n"))
       cat(paste(line, ": ", newLine, "\n"))
-      response = readline("Replace (y/n)?")
+      
+      response = if(promptChange){
+        readline("Replace (y/n)?")
+      }else{
+        'Y'
+      }
+      
       if(grepl("[Yy]", response)){
         Lines[line] = newLine
         changed = TRUE
       }
     }
     
-    if(changed)
-      writeLines(Lines, fullName)
+    if(changed & !dummyRun)
+      writeLines(f$fullName)
   }
 }
 
