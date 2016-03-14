@@ -64,21 +64,19 @@ findQuotesPairs = function(rng = 1:20, root, dummyRun = FALSE, promptChange = TR
       }
     }
     
-    if(changed & !dummyRun)
-      writeLines(f$fullName)
+    if(changed & !dummyRun){
+      writeLines(Lines, f$fullName)
+    }
   }
 }
 
-findQuotes = function(rng = 1:20){
+findQuotes = function(rng = 1:20, root, dummyRun = FALSE, promptChange = TRUE){
   for(i in rng){
-    part = paste0(ifelse(i < 10, "0", ""), i)
-    path = fName = paste0("../Chapter", part, "/")
-    fName = paste0("Chapter", part, ".tex")
-    fullName = paste0(path, fName)
-    cat(fName, "\n")
+    f = setFileNames(i, root)
+    cat(f$fName, "\n")
     
-    Lines = readLines(fullName)
-    writeBackup(Lines, fName, path)
+    Lines = readLines(f$fullName)
+    writeBackup(f$fullName, f$path, dummyRun)
     
     #writeLines(Lines, paste0(fName, ".bak"))
     startQuoteLines = grep('[ ]+\"', Lines)
@@ -98,7 +96,13 @@ findQuotes = function(rng = 1:20){
       
       cat(paste(line, ": ", Lines[line], "\n"))
       cat(paste(line, ": ", newLine, "\n"))
-      response = readline("Replace (y/n)?")
+      
+      response = if(promptChange){
+        readline("Replace (y/n)?")
+      }else{
+        'y'
+      }
+      
       if(grepl("[YyqQ]", response)){
         if(grepl("[Qq]", response)){
           return(0)
@@ -110,8 +114,8 @@ findQuotes = function(rng = 1:20){
       j = j + 1
     }
     
-    if(changed)
-      writeLines(Lines, fullName)
+    if(changed & !dummyRun)
+      writeLines(Lines, f$fullName)
   }
 }
 
