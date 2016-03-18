@@ -4,11 +4,11 @@ cleanTables = function(rng = 1:20, root, dummyRun = FALSE, promptChange = TRUE){
     cat(f$fName, "\n")
     
     Lines = readLines(f$fullName)
-    writeBackup(f$fullName, f$path, dummyRun)
+    writeBackup(f$fName, f$path, dummyRun)
     
-     changed = FALSE
+    changed = FALSE
     
-    tblLoc = cbind(grep("^.*\\\\begin\\{tabular\\*\\}", Lines) ,grep("^.*\\\\end\\{tabular\\*\\}", Lines))
+    tblLoc = cbind(grep("^.*\\\\begin\\{tabular[*]*\\}", Lines) ,grep("^.*\\\\end\\{tabular[*]*\\}", Lines))
     
     nTables = nrow(tblLoc)
     
