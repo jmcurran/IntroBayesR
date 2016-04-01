@@ -1,13 +1,10 @@
-cleanTables = function(rng = 1:20, root, dummyRun = FALSE, promptChange = TRUE){
+countAmp = function(rng = 1:20, root){
   for(i in rng){
     f = setFileNames(i, root)
     cat(f$fName, "\n")
     
     Lines = readLines(f$fullName)
-    writeBackup(f$fName, f$path, dummyRun)
-    
-    changed = FALSE
-    
+
     tblLoc = cbind(grep("^.*\\\\begin\\{tabular[*]*\\}", Lines) ,grep("^.*\\\\end\\{tabular[*]*\\}", Lines))
     
     nTables = nrow(tblLoc)
@@ -17,27 +14,11 @@ cleanTables = function(rng = 1:20, root, dummyRun = FALSE, promptChange = TRUE){
       end = tblLoc[tbl, 2] -1
       
       tblLines = Lines[start:end]
-      newtbl = paste(tblLines, collapse = " ")
-      newtbl = gsub("(\\\\\\\\[ ]*(\\\\hline)*)", "\\1 \n", newtbl)
+      tblLines = gsub("[^&]", "", tblLines)
       
-      response = if(promptChange){
-        readline("Replace (y/n)?")
-      }else{
-        'Y'
-      }
-
-      if(grepl("[Yy]", response)){
-        Lines[start:end] = ""
-        Lines[start] = newtbl
-        changed = TRUE
-      }
-    }
-    
-    if(changed)
-      Lines = Lines[!grepl("^$", Lines)]
-    
-    if(changed & !dummyRun){
-      writeLines(Lines, f$fullName)
+      cat(paste0("Table ", tbl, " at line ", start - 1, "\n"))
+      cat(paste(nchar(tblLines), "\n"))
+      cat(paste("\n"))
     }
   }
 }
