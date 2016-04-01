@@ -1,11 +1,11 @@
 writeBackup = function(src, path, dummyRun = FALSE){
   ## get all the backup files
-  bkupFiles = list.files(path = path, pattern = paste0("^", src, "\\.*bak[0-9]*"))
+  bkupFiles = list.files(path = path, pattern = "Rnw\\.bak[0-9]*")
   bkupNum = 1
   
-  if(any(grepl("^.*bak[0-9]+$", bkupFiles))){
-    bkupFiles = bkupFiles[grepl("^.*bak[0-9]+$", bkupFiles)]
-    bkupNum = max(as.numeric(gsub("^.*bak([0-9]+)$", "\\1", bkupFiles))) + 1
+  if(any(grepl("^.*Rnw\\.bak[0-9]+$", bkupFiles))){
+    bkupFiles = bkupFiles[grepl("^.*Rnw\\.bak[0-9]+$", bkupFiles)]
+    bkupNum = max(as.numeric(gsub("^.*Rnw\\.bak([0-9]+)$", "\\1", bkupFiles))) + 1
   }
   
   dest = paste0(path, src, ".bak", bkupNum)
