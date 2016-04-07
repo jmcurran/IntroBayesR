@@ -7,6 +7,8 @@ Author: James Curran
 Maintainer: James Curran <j.curran@auckland.ac.nz>
 Description: More about what it does (maybe more than one line)
 License: GPL (>= 2)
-Depends: knitr
-Imports: Rcpp (>= 0.11.5)
+Imports: 
+  Rcpp,
+  knitr,
+  stringr
 LinkingTo: Rcpp

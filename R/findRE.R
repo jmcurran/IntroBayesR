@@ -34,7 +34,10 @@ findRE = function(pattern, rng = 1:20, root, dummyRun = TRUE, replace = FALSE, c
       r = gregexpr(pattern, line)
       
       if(length(r) > 0){
-        lapply(regmatches(line, r), function(e){cat(paste(substr(e, 0, 50), "\n"))})
+        lapply(regmatches(line, r), function(e){
+          n = gsub("[,]+", "!", e);
+          cat(paste(substr(e, 1, 50),"\n"));
+        })
       }
     }
   }
