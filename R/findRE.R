@@ -1,4 +1,4 @@
-findRE = function(pattern, rng = 1:20, root, dummyRun = TRUE, replace = FALSE, collapse = FALSE){
+findRE = function(pattern, rng = c(1:20, LETTERS[1:4], "S"), root, dummyRun = TRUE, replace = FALSE, collapse = FALSE){
   for(i in rng){
     f = setFileNames(i, root)
     cat(f$fName, "\n")

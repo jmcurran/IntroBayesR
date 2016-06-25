@@ -1,14 +1,21 @@
 setFileNames = function(i, root){
   part = path = fName = NULL
   
-  if(is.numeric(i)){
+  i = match.arg(i, c(1:20, LETTERS[1:4], "S"))
+  
+  if(i %in% as.character(1:20)){
+    i = as.numeric(i)
     part = paste0(ifelse(i < 10, "0", ""), i)
     path = paste0(root, "/Chapter", part, "/")
     fName = paste0("Chapter", part, ".Rnw")
-  }else if(is.character(i) & grep("[A-D]",i)){
+  }else if(grepl("[A-D]",i)){
     part = gsub("^.*([A-D]).*$", "\\1", i)
-    path = fName = paste0(root, "/Appendix", part, "/")
+    path = paste0(root, "/Appendix", part, "/")
     fName = paste0("Appendix", part, ".Rnw")
+  }else if(grepl("(S|Sel|sel)", i)){
+    part = "SelectedAnswers"
+    path = paste0(root, "/SelectedAnswers/")
+    fName = "SelectedAnswers.Rnw"
   }
   
   if(is.null(fName)){
